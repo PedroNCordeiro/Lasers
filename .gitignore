@@ -1,1 +1,5 @@
 /*.meta
+/Materials/*.meta
+/Prefabs/*.meta
+/Textures/*.meta
+/_Scenes/*.meta
