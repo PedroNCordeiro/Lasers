@@ -17,19 +17,25 @@ public class PlayerController : MonoBehaviour {
 	public float tilt;
 	public Boundary boundary;
 	public float rotationSpeed;
+	public float mouseDelta; 	// Space, in the x-axis, between the ship position and the mouse position, needed to rotate the ship
+	public float rotationDelta;	// Limits in a ship rotation
 
 	void Start () {
 		rb = GetComponent<Rigidbody>();
 		rotation = 0;
 	}
 	
+
 	void FixedUpdate ()
 	{
 		// Receive input
 		float moveHorizontal = Input.GetAxis("Horizontal");
 		float moveVertical = Input.GetAxis("Vertical");
-		bool rotateLeft = Input.GetKey ("q");
-		bool rotateRight = Input.GetKey ("e");
+
+		float mouseX = Input.mousePosition.x/37.5f - 8;
+		bool rotateRight = mouseX - rb.position.x  >= mouseDelta ? true : false;
+		bool rotateLeft = rb.position.x - mouseX >= mouseDelta ? true : false;
+
 
 		Vector3 movement = new Vector3 (moveHorizontal, 0.0f, moveVertical);
 		rb.velocity = movement * speed;
@@ -41,9 +47,10 @@ public class PlayerController : MonoBehaviour {
 			Mathf.Clamp(rb.position.z, boundary.zMin, boundary.zMax)
 		);
 
-		rotation += rotateRight ? rotationSpeed : (rotateLeft ? -rotationSpeed : 0);
-		// rotation += rotationSpeed*rotateRight - rotationSpeed*rotateLeft;
+		rotation += rotateRight ? rotationSpeed : (rotateLeft ? -rotationSpeed : (rotation > 0 ? -rotationSpeed : (rotation < 0 ? rotationSpeed : 0)));
+		rotation = Mathf.Clamp(rotation, -rotationDelta, rotationDelta);
 
 		rb.rotation = Quaternion.Euler (0.0f, rotation, rb.velocity.x * -tilt);
+
 	}
 }
