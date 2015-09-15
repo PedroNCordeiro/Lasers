@@ -20,11 +20,23 @@ public class PlayerController : MonoBehaviour {
 	public float mouseDelta; 	// Space, in the x-axis, between the ship position and the mouse position, needed to rotate the ship
 	public float rotationDelta;	// Limits in a ship rotation
 
+	public GameObject laser;
+	public Transform laserSpawn;
+
 	void Start () {
 		rb = GetComponent<Rigidbody>();
 		rotation = 0;
 	}
 	
+	void Update()
+	{
+		if (rotation > 0)
+		{
+			// Instantiate laser
+			Debug.Log("Clicked");
+			Instantiate (laser, laserSpawn.position, laserSpawn.rotation);
+		}
+	}
 
 	void FixedUpdate ()
 	{
@@ -50,7 +62,7 @@ public class PlayerController : MonoBehaviour {
 		rotation += rotateRight ? rotationSpeed : (rotateLeft ? -rotationSpeed : (rotation > 0 ? -rotationSpeed : (rotation < 0 ? rotationSpeed : 0)));
 		rotation = Mathf.Clamp(rotation, -rotationDelta, rotationDelta);
 
-		rb.rotation = Quaternion.Euler (0.0f, rotation, rb.velocity.x * -tilt);
+		rb.rotation = Quaternion.Euler (rb.velocity.z * tilt, rotation, rb.velocity.x * -tilt);
 
 	}
 }
