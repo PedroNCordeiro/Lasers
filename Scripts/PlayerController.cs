@@ -30,10 +30,9 @@ public class PlayerController : MonoBehaviour {
 	
 	void Update()
 	{
-		if (rotation > 0)
+		if (Input.GetButton("Fire1"))
 		{
 			// Instantiate laser
-			Debug.Log("Clicked");
 			Instantiate (laser, laserSpawn.position, laserSpawn.rotation);
 		}
 	}
