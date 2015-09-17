@@ -7,6 +7,9 @@ public class DestroyByContact : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other)
 	{
+		if (other.tag == "Walls")
+			return;
+
 		Instantiate (explosion, transform.position, transform.rotation);
 
 		Destroy(other.gameObject);

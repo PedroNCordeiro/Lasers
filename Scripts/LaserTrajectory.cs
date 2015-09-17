@@ -11,4 +11,13 @@ public class LaserTrajectory : MonoBehaviour {
 		rb = GetComponent<Rigidbody>();	
 		rb.velocity = transform.forward * speed;
 	}
+
+	void OnTriggerEnter(Collider other){
+		if (other.tag == "Walls")
+		{
+			Vector3 oldRotation = transform.rotation.eulerAngles;
+			transform.Rotate (0, -(2*oldRotation.y), 0);
+			rb.velocity = transform.forward * speed;
+		}
+	}
 }
