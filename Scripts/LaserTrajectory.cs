@@ -13,11 +13,13 @@ public class LaserTrajectory : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider other){
-		if (other.tag == "Walls")
-		{
-			Vector3 oldRotation = transform.rotation.eulerAngles;
-			transform.Rotate (0, -(2*oldRotation.y), 0);
-			rb.velocity = transform.forward * speed;
-		}
+
+		Debug.Log("Old rotation: " + transform.rotation.eulerAngles);
+
+		Vector3 oldRotation = transform.rotation.eulerAngles;
+		transform.Rotate (0, -(2*oldRotation.y), 0);	// Laser collision on side walls
+		rb.velocity = transform.forward * speed;
+		
+		Debug.Log("New rotation: " + transform.rotation.eulerAngles);
 	}
 }
