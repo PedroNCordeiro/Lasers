@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour {
 
 	private Rigidbody rb;
 	private float rotation;
+	private float nextFire;
 
 	public float speed;
 	public float tilt;
@@ -22,6 +23,7 @@ public class PlayerController : MonoBehaviour {
 
 	public GameObject laser;
 	public Transform laserSpawn;
+	public float fireRate;
 
 	void Start () {
 		rb = GetComponent<Rigidbody>();
@@ -30,9 +32,10 @@ public class PlayerController : MonoBehaviour {
 	
 	void Update()
 	{
-		if (Input.GetButton("Fire1"))
+		if (Input.GetButton("Fire1") && Time.time > nextFire)
 		{
-			// Instantiate laser
+			nextFire = Time.time + fireRate;
+			// Instantiate shot
 			Instantiate (laser, laserSpawn.position, laserSpawn.rotation);
 		}
 	}
