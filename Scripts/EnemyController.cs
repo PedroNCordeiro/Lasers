@@ -68,13 +68,13 @@ public class EnemyController : MonoBehaviour {
 			Mathf.Clamp(rb.position.z, boundary.zMin, boundary.zMax)
 		);
 
-		// // Fire shots whenever possible
-		// if (Time.time > nextFire)
-		// {
-		// 	nextFire = Time.time + fireRate;
-		// 	// Instantiate shot
-		// 	Instantiate (laser, laserSpawn.position, laserSpawn.rotation);
-		// }
+		// Fire shots whenever possible
+		if (Time.time > nextFire)
+		{
+			nextFire = Time.time + fireRate;
+			// Instantiate shot
+			Instantiate (laser, laserSpawn.position, laserSpawn.rotation);
+		}
 
 	}
 
