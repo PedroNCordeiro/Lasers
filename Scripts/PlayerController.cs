@@ -64,7 +64,7 @@ public class PlayerController : MonoBehaviour {
 		rotation += rotateRight ? rotationSpeed : (rotateLeft ? -rotationSpeed : (rotation > 0 ? -rotationSpeed : (rotation < 0 ? rotationSpeed : 0)));
 		rotation = Mathf.Clamp(rotation, -rotationDelta, rotationDelta);
 
-		rb.rotation = Quaternion.Euler (rb.velocity.z * tilt, rotation, rb.velocity.x * -tilt);
+		rb.rotation = Quaternion.Euler (0, rotation, rb.velocity.x * -tilt);
 
 	}
 }
