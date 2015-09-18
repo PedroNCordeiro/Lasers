@@ -12,11 +12,16 @@ public class EnemyController : MonoBehaviour {
 
 	private Rigidbody rb;
 	private GameObject nearestLaser;
-	
+	private float nextFire;
+
 	public Transform bestSpot; // Default position of the ship, if there are no lasers nearby
 	public float speed;
 	public float safetyDistance; // Defines if the ship should run from the nearest laser or not
 	public EnemyBoundary boundary;
+	public Transform humanPlayer;
+	public float fireRate;
+	public GameObject laser;
+	public Transform laserSpawn;
 	
 	void Start ()
 	{
@@ -25,13 +30,18 @@ public class EnemyController : MonoBehaviour {
 
 	void Update ()
 	{
+		Vector3 targetDir = humanPlayer.position - transform.position;
+		float step = speed * Time.deltaTime;
+		Vector3 newDir = Vector3.RotateTowards(transform.forward, targetDir, step, 0.0F);
+		transform.rotation = Quaternion.LookRotation(newDir);
+
 		nearestLaser = GetClosestLaser();
 
 		if (nearestLaser == null || Vector3.Distance(transform.position, nearestLaser.transform.position) > safetyDistance) 
-			transform.position = Vector3.MoveTowards(transform.position, bestSpot.position, speed * Time.deltaTime); // Move to best spot
+			transform.position = Vector3.MoveTowards(transform.position, bestSpot.position, step); // Move to best spot
 		else
 		{
-			transform.position = Vector3.MoveTowards(transform.position, nearestLaser.transform.position, -speed * Time.deltaTime); // Run away from the laser
+			transform.position = Vector3.MoveTowards(transform.position, nearestLaser.transform.position, -step); // Run away from the laser
 		}
 
 		rb.position = new Vector3
@@ -40,6 +50,14 @@ public class EnemyController : MonoBehaviour {
 			0.0f,
 			Mathf.Clamp(rb.position.z, boundary.zMin, boundary.zMax)
 		);
+
+		if (Time.time > nextFire)
+		{
+			nextFire = Time.time + fireRate;
+			// Instantiate shot
+			Instantiate (laser, laserSpawn.position, laserSpawn.rotation);
+		}
+
 	}
 
 	GameObject GetClosestLaser()
