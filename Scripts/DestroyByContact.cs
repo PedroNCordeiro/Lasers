@@ -3,14 +3,14 @@ using System.Collections;
 
 public class DestroyByContact : MonoBehaviour {
 
-	private AudioSource[] sources;
+	private AudioSource source;
 
 	public GameObject playerExplosion;
 	public GameObject laserExplosion;
 
 	void Start()
 	{
-		sources = GetComponents<AudioSource>();
+		source = GetComponent<AudioSource>();
 	}
 
 	void OnTriggerEnter(Collider other)
@@ -21,13 +21,12 @@ public class DestroyByContact : MonoBehaviour {
 		if (other.tag == "Player")
 		{
 			Instantiate (playerExplosion, transform.position, transform.rotation);
-			sources[1].Play ();
 			Destroy(other.gameObject);
 		}
 		if (other.tag == "Laser") 
 		{
 			Instantiate (laserExplosion, transform.position, transform.rotation);
-			sources[0].Play ();
+			source.Play ();
 		}
 		Destroy(gameObject);
 	}
