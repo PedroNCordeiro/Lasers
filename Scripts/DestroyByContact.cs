@@ -3,6 +3,7 @@ using System.Collections;
 
 public class DestroyByContact : MonoBehaviour {
 
+	private GameController gameController;
 	private AudioSource source;
 
 	public GameObject playerExplosion;
@@ -11,6 +12,13 @@ public class DestroyByContact : MonoBehaviour {
 	void Start()
 	{
 		source = GetComponent<AudioSource>();
+
+		GameObject gameControllerObject = GameObject.FindWithTag("GameController");
+		if (gameControllerObject != null)
+			gameController = gameControllerObject.GetComponent <GameController>();
+
+		if (gameController == null)
+			Debug.Log("Cannot find 'GameController' script");
 	}
 
 	void OnTriggerEnter(Collider other)
@@ -18,11 +26,14 @@ public class DestroyByContact : MonoBehaviour {
 		if (other.tag == "Walls1" || other.tag == "Walls2")
 			return;
 
-		if (other.tag == "Player")
+		if (other.tag == "Player") // Human player or enemy player
 		{
 			Instantiate (playerExplosion, transform.position, transform.rotation);
 			Destroy(other.gameObject);
+
+			gameController.Restart();
 		}
+
 		if (other.tag == "Laser") 
 		{
 			Instantiate (laserExplosion, transform.position, transform.rotation);

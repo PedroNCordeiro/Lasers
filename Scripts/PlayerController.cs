@@ -65,6 +65,6 @@ public class PlayerController : MonoBehaviour {
 		rotation = Mathf.Clamp(rotation, -rotationDelta, rotationDelta);
 
 		rb.rotation = Quaternion.Euler (0, rotation, rb.velocity.x * -tilt);
-
+		
 	}
 }
