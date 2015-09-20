@@ -24,15 +24,18 @@ public class PlayerController : MonoBehaviour {
 	public GameObject laser;
 	public Transform laserSpawn;
 	public float fireRate;
+	public float spawnTime;
 
-	void Start () {
+	IEnumerator Start () {
+		yield return new WaitForSeconds(spawnTime);
+
 		rb = GetComponent<Rigidbody>();
 		rotation = 0;
 	}
 	
 	void Update()
 	{
-		if (Input.GetButton("Fire1") && Time.time > nextFire)
+		if (Time.time > nextFire && Input.GetButton("Fire1") && rb != null)
 		{
 			nextFire = Time.time + fireRate;
 			// Instantiate shot
@@ -42,29 +45,31 @@ public class PlayerController : MonoBehaviour {
 
 	void FixedUpdate ()
 	{
-		// Receive input
-		float moveHorizontal = Input.GetAxis("Horizontal");
-		float moveVertical = Input.GetAxis("Vertical");
+		if (rb != null)
+		{
+			// Receive input
+			float moveHorizontal = Input.GetAxis("Horizontal");
+			float moveVertical = Input.GetAxis("Vertical");
 
-		float mouseX = Input.mousePosition.x/37.5f - 8;
-		bool rotateRight = mouseX - rb.position.x  >= mouseDelta ? true : false;
-		bool rotateLeft = rb.position.x - mouseX >= mouseDelta ? true : false;
+			float mouseX = Input.mousePosition.x/37.5f - 8;
+			bool rotateRight = mouseX - rb.position.x  >= mouseDelta ? true : false;
+			bool rotateLeft = rb.position.x - mouseX >= mouseDelta ? true : false;
 
 
-		Vector3 movement = new Vector3 (moveHorizontal, 0.0f, moveVertical);
-		rb.velocity = movement * speed;
-  
-		rb.position = new Vector3
-		(
-			Mathf.Clamp(rb.position.x, boundary.xMin, boundary.xMax),
-			0.0f,
-			Mathf.Clamp(rb.position.z, boundary.zMin, boundary.zMax)
-		);
+			Vector3 movement = new Vector3 (moveHorizontal, 0.0f, moveVertical);
+			rb.velocity = movement * speed;
+	  
+			rb.position = new Vector3
+			(
+				Mathf.Clamp(rb.position.x, boundary.xMin, boundary.xMax),
+				0.0f,
+				Mathf.Clamp(rb.position.z, boundary.zMin, boundary.zMax)
+			);
 
-		rotation += rotateRight ? rotationSpeed : (rotateLeft ? -rotationSpeed : (rotation > 0 ? -rotationSpeed : (rotation < 0 ? rotationSpeed : 0)));
-		rotation = Mathf.Clamp(rotation, -rotationDelta, rotationDelta);
+			rotation += rotateRight ? rotationSpeed : (rotateLeft ? -rotationSpeed : (rotation > 0 ? -rotationSpeed : (rotation < 0 ? rotationSpeed : 0)));
+			rotation = Mathf.Clamp(rotation, -rotationDelta, rotationDelta);
 
-		rb.rotation = Quaternion.Euler (0, rotation, rb.velocity.x * -tilt);
-		
+			rb.rotation = Quaternion.Euler (0, rotation, rb.velocity.x * -tilt);
+		}
 	}
 }
