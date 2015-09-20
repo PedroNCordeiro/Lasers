@@ -31,6 +31,11 @@ public class DestroyByContact : MonoBehaviour {
 			Instantiate (playerExplosion, transform.position, transform.rotation);
 			Destroy(other.gameObject);
 
+			if (other.transform.position.z < 0) // Enemy ship was shot
+				gameController.AddScore(false);
+			else // Player ship was shot
+				gameController.AddScore(true);
+
 			gameController.Restart();
 		}
 
