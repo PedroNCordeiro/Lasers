@@ -11,15 +11,11 @@ public class Boundary
 public class PlayerController : MonoBehaviour {
 
 	private Rigidbody rb;
-	private float rotation;
 	private float nextFire;
 
 	public float speed;
-	public float tilt;
 	public Boundary boundary;
 	public float rotationSpeed;
-	public float mouseDelta; 	// Space, in the x-axis, between the ship position and the mouse position, needed to rotate the ship
-	public float rotationDelta;	// Limits in a ship rotation
 
 	public GameObject laser;
 	public Transform laserSpawn;
@@ -30,7 +26,6 @@ public class PlayerController : MonoBehaviour {
 		yield return new WaitForSeconds(spawnTime);
 
 		rb = GetComponent<Rigidbody>();
-		rotation = 0;
 	}
 	
 	void Update()
@@ -51,11 +46,6 @@ public class PlayerController : MonoBehaviour {
 			float moveHorizontal = Input.GetAxis("Horizontal");
 			float moveVertical = Input.GetAxis("Vertical");
 
-			float mouseX = Input.mousePosition.x/37.5f - 8;
-			bool rotateRight = mouseX - rb.position.x  >= mouseDelta ? true : false;
-			bool rotateLeft = rb.position.x - mouseX >= mouseDelta ? true : false;
-
-
 			Vector3 movement = new Vector3 (moveHorizontal, 0.0f, moveVertical);
 			rb.velocity = movement * speed;
 	  
@@ -66,10 +56,15 @@ public class PlayerController : MonoBehaviour {
 				Mathf.Clamp(rb.position.z, boundary.zMin, boundary.zMax)
 			);
 
-			rotation += rotateRight ? rotationSpeed : (rotateLeft ? -rotationSpeed : (rotation > 0 ? -rotationSpeed : (rotation < 0 ? rotationSpeed : 0)));
-			rotation = Mathf.Clamp(rotation, -rotationDelta, rotationDelta);
+			Vector3 mouseCoord = Camera.main.ScreenPointToRay(Input.mousePosition).origin;
+			mouseCoord.y = 0;
 
-			rb.rotation = Quaternion.Euler (0, rotation, rb.velocity.x * -tilt);
+			Vector3 targetDir = mouseCoord - transform.position;
+			Vector3 newDir = Vector3.RotateTowards(transform.forward, targetDir, speed * Time.time, 0.0F);
+
+			transform.rotation = Quaternion.LookRotation(newDir);
+
+			
 		}
 	}
 }
