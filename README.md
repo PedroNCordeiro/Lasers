@@ -5,13 +5,7 @@ Minimal game where 2 space ships shoot at each other. Lasers bounce on walls unt
 
 ### Downloading the game
 
-Build files are found under the 'build' branch.  
-To download this branch, create a new folder and type:
-
-`git init`  
-`git remote add origin https://github.com/PedroNCordeiro/Lasers.git`  
-`git checkout -b lasers`  
-`git pull origin build`  
+Fo to the 'release' section of this repository (https://github.com/PedroNCordeiro/Lasers/releases) and download the 'release.zip' file.
 
 To run the game, just open the 'Lasers.html' file under a web browser that supports Unity Web Player plugin.
 
