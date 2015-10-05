@@ -5,7 +5,7 @@ Minimal game where 2 space ships shoot at each other. Lasers bounce on walls unt
 
 ### Downloading the game
 
-Fo to the 'release' section of this repository (https://github.com/PedroNCordeiro/Lasers/releases) and download the 'release.zip' file from the latest version (currently 1.1).
+Go to the 'release' section of this repository (https://github.com/PedroNCordeiro/Lasers/releases) and download the 'release.zip' file from the latest version (currently 1.1).
 
 To run the game, just open the 'Lasers.html' file under a web browser that supports Unity Web Player plugin.
 
